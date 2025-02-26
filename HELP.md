@@ -1,4 +1,5 @@
 ## 📁폴더 구조 설명
+
 ```
 /my-react-app
 ├── /public
@@ -17,27 +18,27 @@
 │   ├── App.js                      # 루트 컴포넌트
 │   ├── index.js                    # 엔트리 포인트
 │   ├── /types                      # 타입스크립트를 사용할 경우 타입 정의
-└── .gitignore                       # Git에서 무시할 파일들
+└── .gitignore                      # Git에서 무시할 파일들
 ```
 
 ## ⚙ VITE 환경에서 환경변수를 사용하는 방법
+
 ### .env.local
+
 ```.env
 VITE_API_KEY=fsdfs63456534 # 와 같은 환경변수가 있다고 가정
 ```
 
-
 ### App.jsx
+
 ```javascript
 import Form from 'react-bootstrap/Form';
 
 function App() {
-
-    const apiKey = import.meta.env.VITE_API_KEY; // 와 같이 해야 함
+  const apiKey = import.meta.env.VITE_API_KEY; // 와 같이 해야 함
   return (
     <>
-      <Form>
-      </Form>
+      <Form></Form>
     </>
   );
 }
@@ -45,17 +46,20 @@ function App() {
 export default App;
 ```
 
-
 ## 커밋 컨벤션
+
 ### 전통적인 커밋 컨벤션 형식
+
 ```
 <타입>(<스코프>): <커밋 메시지>
 ```
+
 - 타입: 커밋의 목적을 나타내는 키워드
 - 스코프 (선택적): 커밋이 영향을 미친 범위나 모듈
 - 커밋 메시지: 변경 사항에 대한 간단하고 명확한 설명
 
 ### 커밋 타입 예시
+
 - feat: 새로운 기능을 추가할 때 사용
 - fix: 버그 수정 시 사용
 - docs: 문서 수정 시 사용
@@ -75,7 +79,9 @@ test(user-auth): add unit tests for login module
 ```
 
 ### 상세한 커밋 내용이 있는 경우
+
 #### 상세 커밋 형식
+
 ```
 <타입>(<스코프>): <커밋 메시지 제목>
 
@@ -84,6 +90,7 @@ test(user-auth): add unit tests for login module
 <이슈 번호와 관련된 내용(선택)>
 
 ```
+
 - 타입: 변경의 종류 (예: feat, fix, chore 등)
 - 스코프 (선택적): 변경 사항이 적용된 모듈이나 부분
 - 커밋 메시지 제목: 간결하고 핵심적인 변경 내용
@@ -91,6 +98,7 @@ test(user-auth): add unit tests for login module
 - 이슈 번호 (선택적): 관련된 이슈 번호나 참조
 
 #### 커밋 메시지 본문 작성 방식
+
 본문에서는 변경 사항에 대해 더 자세히 설명한다. 보통 본문은 다음과 같은 내용을 포함할 수 있다.
 
 - 문제를 해결한 이유: 왜 이 변경이 필요한지
@@ -98,8 +106,10 @@ test(user-auth): add unit tests for login module
 - 기타 중요한 정보: 예를 들어, 테스트가 추가되었거나, 특정 라이브러리나 버전이 필요하다는 정보
 
 #### 예시
+
 ##### 1) 기능 추가
-``` 
+
+```
 feat(user-auth): add JWT authentication
 
 - 사용자가 로그인 후 JWT를 발급받을 수 있도록 기능 추가
@@ -109,9 +119,11 @@ feat(user-auth): add JWT authentication
 
 #23
 ```
+
 - 커밋 메시지 본문에서는 어떤 방식으로 인증을 구현했는지, JWT가 어떻게 사용되는지 등 추가적인 설명을 제공한다. 또한, 관련된 이슈 번호 #23을 추가하여 이 커밋이 어떤 문제를 해결하는지 명시한다.
 
 ##### 2) 버그 수정
+
 ```
 fix(button): resolve alignment issue on mobile
 
@@ -121,9 +133,11 @@ fix(button): resolve alignment issue on mobile
 
 #42
 ```
+
 - 커밋 메시지 본문에서는 버그를 수정한 구체적인 방법과 어떤 변경이 이루어졌는지 설명한다. 추가적으로, 해당 버그가 해결된 이슈 번호 #42를 연결한다.
 
 ##### 3) 성능 최적화
+
 ```
 perf(search): optimize query performance for search results
 
@@ -133,9 +147,11 @@ perf(search): optimize query performance for search results
 
 #56
 ```
+
 - 커밋 메시지 본문에서는 성능 최적화가 어떤 방식으로 이루어졌는지, 특히 어떤 쿼리나 기술이 변경되었는지를 구체적으로 설명한다. 성능 향상 효과에 대한 데이터도 제공할 수 있다.
 
 ##### 4) 문서 수정
+
 ```
 docs(readme): update installation instructions for Windows
 
@@ -145,4 +161,5 @@ docs(readme): update installation instructions for Windows
 
 #60
 ```
+
 - 커밋 메시지 본문에서는 문서에서 변경된 내용을 상세히 설명하고, 어떤 부분이 업데이트되었는지 명확하게 기재한다.
