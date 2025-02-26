@@ -46,6 +46,105 @@ function App() {
 export default App;
 ```
 
+## 📚 브랜치 컨벤션
+
+- 브랜치 컨벤션은 우리가 각자의 로컬 레포지토리에서 작업 후에 팀장의 레포지토리의 개발 브랜치에 PR을 올릴 때, 지키면 좋은 브랜치 작명 컨벤션을 의미합니다.
+
+#### 1. 기능 추가 (Feature)
+
+- 형식: feature/{작업 내용}
+- 설명: 새로운 기능을 추가하는 브랜치.
+- 예시:
+
+```bash
+feature/user-authentication
+feature/payment-integration
+feature/search-bar
+```
+
+#### 2. 버그 수정 (Fix)
+
+- 형식: fix/{버그 설명}
+- 설명: 기존의 버그를 수정하는 브랜치.
+- 예시:
+
+```bash
+fix/login-error
+fix/button-click-issue
+fix/navbar-crash
+```
+
+#### 3. 핫픽스 (Hotfix)
+
+- 형식: hotfix/{긴급 수정 내용}
+- 설명: 프로덕션 환경에서 급히 수정해야 할 문제를 해결하는 브랜치.
+- 예시:
+
+```bash
+hotfix/critical-db-issue
+hotfix/production-bug
+hotfix/security-patch
+```
+
+#### 4. 코드 정리 (Chore)
+
+- 형식: chore/{작업 내용}
+- 설명: 코드 스타일 정리, 설정 파일 수정, 환경 설정 변경 등 비기능적인 작업을 위한 브랜치.
+- 예시:
+
+```bash
+chore/update-eslint-config
+chore/cleanup-unused-code
+chore/upgrade-dependencies
+```
+
+#### 5. 문서화 (Docs)
+
+- 형식: docs/{문서 작업 내용}
+- 설명: 문서화 작업이나 README 파일 수정 등을 위한 브랜치.
+- 예시:
+
+```bash
+docs/update-readme
+docs/add-api-documentation
+docs/fix-typos
+```
+
+#### 6. 리팩토링 (Refactor)
+
+- 형식: refactor/{리팩토링 내용}
+- 설명: 기존 코드를 개선하거나 구조를 변경하지만 기능은 변경하지 않는 브랜치.
+- 예시:
+
+```bash
+refactor/user-service
+refactor/code-simplification
+refactor/optimize-db-queries
+```
+
+### 7. 테스트 (Test)
+
+- 형식: test/{테스트 내용}
+- 설명: 테스트 코드 추가 또는 수정 작업을 위한 브랜치.
+- 예시:
+
+```bash
+test/unit-tests
+test/integration-tests
+test/ui-tests
+```
+
+### 8. 기타 작업 (Other)
+
+- 형식: other/{작업 내용}
+- 설명: 위에 나열된 항목에 해당하지 않는 작업을 위한 브랜치.
+- 예시:
+
+```bash
+other/prod-deployment
+other/devops-setup
+```
+
 ## 📔 커밋 컨벤션
 
 ### 전통적인 커밋 컨벤션 형식
@@ -163,9 +262,3 @@ docs(readme): update installation instructions for Windows
 ```
 
 - 커밋 메시지 본문에서는 문서에서 변경된 내용을 상세히 설명하고, 어떤 부분이 업데이트되었는지 명확하게 기재한다.
-
-## PR 시 템플릿 사용방법(임시22)
-
-```
-
-```
