@@ -164,7 +164,7 @@ docs(readme): update installation instructions for Windows
 
 - 커밋 메시지 본문에서는 문서에서 변경된 내용을 상세히 설명하고, 어떤 부분이 업데이트되었는지 명확하게 기재한다.
 
-## PR 시 템플릿 사용방법(임시)
+## PR 시 템플릿 사용방법(임시22)
 
 ```
 
