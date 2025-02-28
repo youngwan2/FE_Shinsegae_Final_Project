@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Routes, Route } from 'react-router-dom';
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
-import Top from './Top';
+import Top from './components/layout/Top';
 import MenuBar from './MenuBar';
 import SignIn from './pages/SignIn.jsx';
 import HomePage from './pages/HomePage';
@@ -11,6 +12,7 @@ import CameraCapturePage from './pages/CameraCapturePage';
 import ContactPage from './pages/ContactPage';
 import MyPage from './pages/MyPage';
 import EventPage from './pages/EventPage';
+import SignUp from './pages/SignUp.jsx';
 
 function App() {
   // localStorage에서 초기 데이터 불러오기
@@ -43,6 +45,7 @@ function App() {
         <Route path='/camera' element={<CameraCapturePage onAdd={handleAdd} />} />
         <Route path='/signin' element={<SignIn />} />
         <Route path='/mypage' element={<MyPage />} />
+        <Route path='/signup' element={<SignUp />} /> {/* ✅ 회원가입 경로 추가 */}
       </Routes>
     </div>
   );

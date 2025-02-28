@@ -1,81 +1,133 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 function SignIn() {
-  console.log('SignIn 컴포넌트 렌더링됨'); // ✅ 확인용 로그 추가
-  const location = useLocation();
+    console.log('SignIn 컴포넌트 렌더링됨'); // ✅ 확인용 로그 추가
+    const location = useLocation();
+    const navigate = useNavigate(); // ✅ useNavigate 선언 추가
 
-  const [userName, setUserName] = useState(null);
-  const [redirectUrl, setRedirectUrl] = useState('/');
+    const [userName, setUserName] = useState(null);
+    const [redirectUrl, setRedirectUrl] = useState('/');
+    const [email, setEmail] = useState(''); // ✅ 이메일 상태 추가
+    const [password, setPassword] = useState(''); // ✅ 비밀번호 상태 추가
 
-  // 로그인 후 리디렉션될 URL을 서버에서 가져오기
-  const getRedirectUrl = async () => {
-    try {
-      console.log('리디렉션 URL 가져오는 중...'); // ✅ 확인용 로그 추가
-      const response = await fetch('http://localhost:5000/get-redirect-url', {
-        method: 'GET',
-        credentials: 'include',
-      });
+    // 로그인 후 리디렉션될 URL을 서버에서 가져오기
+    const getRedirectUrl = async () => {
+        try {
+            console.log('리디렉션 URL 가져오는 중...'); // ✅ 확인용 로그 추가
+            const response = await fetch('http://localhost:5000/auth/get-redirect-url', {
+                method: 'GET',
+                credentials: 'include',
+            });
 
-      if (!response.ok) {
-        throw new Error('서버에서 리디렉션 URL을 가져오지 못함');
-      }
+            if (!response.ok) {
+                throw new Error('서버에서 리디렉션 URL을 가져오지 못함');
+            }
 
-      const data = await response.json();
-      console.log('가져온 리디렉션 URL:', data.redirectUrl); // ✅ 확인용 로그 추가
-      setRedirectUrl(data.redirectUrl);
-    } catch (error) {
-      console.error('리디렉션 URL 가져오기 실패:', error);
-    }
-  };
+            const data = await response.json();
+            console.log('가져온 리디렉션 URL:', data.redirectUrl); // ✅ 확인용 로그 추가
+            setRedirectUrl(data.redirectUrl);
+        } catch (error) {
+            console.error('리디렉션 URL 가져오기 실패:', error);
+        }
+    };
 
-  useEffect(() => {
-    console.log('SignIn useEffect 실행됨'); // ✅ 확인용 로그 추가
-    getRedirectUrl();
+    // 로컬 로그인 요청
+    const handleLogin = async () => { 
+        try {
+            const response = await fetch("http://localhost:5000/auth/locallogin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                }),
+                credentials: "include" // 세션 유지
+            });
 
-    const params = new URLSearchParams(location.search);
-    const userId = params.get('userId');
-    const userName = params.get('userName');
+            const result = await response.json();
 
-    console.log('URL Params:', { userId, userName }); // ✅ 확인용 로그 추가
+            if (response.ok) {
+                alert("로그인 성공!");
+                setUserName(result.username); // ✅ 로그인한 유저 이름 저장
+                navigate('/'); // ✅ 로그인 후 홈으로 이동
+            } else {
+                alert("로그인 실패: " + result.message);
+            }
+        } catch (error) {
+            console.error("로그인 요청 중 오류 발생:", error);
+            alert("로그인 중 오류가 발생했습니다.");
+        }
+    };
 
-    if (userId && userName) {
-      setUserName(userName);
-    }
-  }, [location.search]);
+    useEffect(() => {
+        console.log('SignIn useEffect 실행됨'); // ✅ 확인용 로그 추가
+        getRedirectUrl();
 
-  const handleKakaoLogin = () => {
-    window.location.href = `http://localhost:5000/kakao?redirect=${encodeURIComponent(redirectUrl)}`;
-  };
+        const params = new URLSearchParams(location.search);
+        const userId = params.get('userId');
+        const userName = params.get('userName');
 
-  const handleNaverLogin = () => {
-    const redirectUri = 'http://localhost:5000/naver/callback';
-    const clientId = 'FZkzMCrtIuOaZdWdc0Hx';
-    const state = Math.random().toString(36).substring(2, 15);
+        console.log('URL Params:', { userId, userName }); // ✅ 확인용 로그 추가
 
-    const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&redirect=${encodeURIComponent(redirectUrl)}`;
-    window.location.href = naverAuthUrl;
-  };
+        if (userId && userName) {
+            setUserName(userName);
+        }
+    }, [location.search]);
 
-  const handleGoogleLogin = () => {
-    window.location.href = `http://localhost:5000/google?redirect=${encodeURIComponent(redirectUrl)}`;
-  };
+    const handleKakaoLogin = () => {
+        window.location.href = `http://localhost:5000/auth/kakao`;
+    };
 
-  return (
-    <div className='signin-container'>
-      <h1>소셜 로그인</h1>
-      <button onClick={handleKakaoLogin} className='login-btn'>
-        카카오 로그인
-      </button>
-      <button onClick={handleNaverLogin} className='login-btn'>
-        네이버 로그인
-      </button>
-      <button onClick={handleGoogleLogin} className='login-btn'>
-        구글 로그인
-      </button>
+    const handleNaverLogin = () => {
+        window.location.href = 'http://localhost:5000/auth/naver';
+    };
 
-      {userName && <div className='topbar'>환영합니다, {userName}님!</div>}
-    </div>
-  );
+    const handleGoogleLogin = () => {
+        window.location.href = `http://localhost:5000/auth/google`;
+    };
+
+    const handleSignUpRedirect = () => {
+        navigate('/signup');
+    };
+
+    return (
+        <div className="signin-container">
+            <h1>소셜 로그인</h1>
+            <button onClick={handleKakaoLogin} className="login-btn">
+                카카오 로그인
+            </button>
+            <button onClick={handleNaverLogin} className="login-btn">
+                네이버 로그인
+            </button>
+            <button onClick={handleGoogleLogin} className="login-btn">
+                구글 로그인
+            </button>
+
+
+            {/* ✅ 로컬 로그인 폼 추가 */}
+            <h2>로컬 로그인</h2>
+            <input
+                type="email"
+                placeholder="이메일 입력"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+                type="password"
+                placeholder="비밀번호 입력"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <button onClick={handleLogin} className="login-btn">
+                로그인
+            </button>
+            <button onClick={handleSignUpRedirect} className="signup-redirect-btn">회원가입</button>
+            {userName && <div className="topbar">환영합니다, {userName}님!</div>}
+        </div>
+    );
 }
 
 export default SignIn;

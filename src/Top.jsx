@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom'; // Link 추가
+import { useEffect, useState } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import './App.css';
 
 function Top() {
@@ -25,22 +25,22 @@ function Top() {
   // 사용자 정보를 서버에서 가져오는 함수
   const fetchUserInfo = async () => {
     try {
-      const response = await fetch('http://localhost:5000/user-info', {
+      const response = await fetch('http://localhost:5000/auth/user-info', {
         method: 'GET',
-        credentials: 'include',
+        credentials: 'include', // 세션 유지 필수
       });
-
+  
       if (!response.ok) {
         throw new Error('로그인 정보 조회 실패');
       }
-
+  
       const data = await response.json();
-      setUserId(data.userId);
-      setUserName(data.userName);
+      console.log('사용자 정보:', data);
     } catch (error) {
       console.error('사용자 정보 조회 오류:', error.message);
     }
   };
+  
 
   // 로그인 버튼 클릭 시 실행되는 함수
   const handleSignInClick = async () => {

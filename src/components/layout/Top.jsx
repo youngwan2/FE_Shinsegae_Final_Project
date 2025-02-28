@@ -1,14 +1,45 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import '../App.css';
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import "../../App.css"; // 경로 확인 필수!
+
 
 function Top() {
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState(null);
+  const [userEmail, setUserEmail] = useState(null); // 이메일 추가
   const [searchQuery, setSearchQuery] = useState(''); // 검색어 상태 추가
   const navigate = useNavigate();
   const location = useLocation();
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
 
+  // 🔹 사용자 정보를 서버에서 가져오는 함수
+  const fetchUserInfo = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/auth/user-info", {
+        method: "GET",
+        credentials: "include", // 세션 유지 필수
+      });
+  
+      if (!response.ok) {
+        throw new Error("로그인 정보 조회 실패");
+      }
+  
+      // 응답 본문을 JSON으로 읽기
+      const data = await response.json();
+      console.log("응답 상태:", response.status);
+      console.log("사용자 정보:", data);
+  
+      // 상태 업데이트하여 화면에 표시
+      setUserId(data.userId);
+      setUserName(data.userName);
+      // setUserEmail(data.userEmail); // 이메일 추가 필요시 사용
+    } catch (error) {
+      console.error("사용자 정보 조회 오류:", error.message);
+    }
+  };
+  
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const userIdFromUrl = urlParams.get('userId');
@@ -23,24 +54,7 @@ function Top() {
   }, [location]);
 
   // 사용자 정보를 서버에서 가져오는 함수
-  const fetchUserInfo = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/user-info', {
-        method: 'GET',
-        credentials: 'include',
-      });
 
-      if (!response.ok) {
-        throw new Error('로그인 정보 조회 실패');
-      }
-
-      const data = await response.json();
-      setUserId(data.userId);
-      setUserName(data.userName);
-    } catch (error) {
-      console.error('사용자 정보 조회 오류:', error.message);
-    }
-  };
 
   // 로그인 버튼 클릭 시 실행되는 함수
   const handleSignInClick = async () => {
@@ -97,8 +111,11 @@ function Top() {
       </form>
 
       <div className='welcome-message'>
-        {userId && userName && <p>{userName}님, 어서 오세요!</p>}
-
+        {userId && userName && <p>{userName}님, 어서 오세요!    <p></p>유저 ID: {userId}</p>
+        
+        
+        }
+   
         {userId ? (
           <>
             <button className='TopSigninBt' onClick={handleLogoutClick}>
