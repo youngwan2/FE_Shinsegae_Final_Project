@@ -102,11 +102,11 @@ function SignIn() {
             <button onClick={handleNaverLogin} className="login-btn">
                 네이버 로그인
             </button>
-            <button onClick={handleGoogleLogin} className="login-btn">
-                구글 로그인
-            </button>
-
-
+            {/* 
+<button onClick={handleGoogleLogin} className="login-btn">
+    구글 로그인
+</button>
+*/}
             {/* ✅ 로컬 로그인 폼 추가 */}
             <h2>로컬 로그인</h2>
             <input

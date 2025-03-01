@@ -1,122 +1,197 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../App.css';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../App.css";
 
 function MyPage() {
   const [userId, setUserId] = useState(null);
-  const [userName, setUserName] = useState('');
-  const [emails, setEmails] = useState(['']);
-  const [phones, setPhones] = useState(['']);
-  const [address, setAddress] = useState('');
+  const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("");
+  const [emails, setEmails] = useState([""]);
+  const [phones, setPhones] = useState([""]);
+  const [addresses, setAddresses] = useState([{ address1: "", address2: "", post: "", isDefault: false }]);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchUserInfo();
   }, []);
 
-  // 사용자 정보 가져오기
   const fetchUserInfo = async () => {
     try {
-      const response = await fetch('http://localhost:5000/auth/user-info', {
+      const response = await fetch("http://localhost:5000/auth/user-info", {
         method: "GET",
-        credentials: "include", // 세션 유지 필수
+        credentials: "include",
       });
-
-   
+  
       if (!response.ok) {
         throw new Error("로그인 정보 조회 실패");
       }
       const data = await response.json();
-      setUserId(data.user_id);
-      setUserName(data.userName); // 세션에서 받아온 값 사용
-      setEmails(data.emails || ['']);
-      setPhones(data.phones || ['']);
-      setAddress(data.address);
+  
+      console.log("📢 서버에서 받은 데이터:", data); // ✅ 디버깅용
+  
+      setUserId(data.userId); 
+      setUserName(data.userName);
+      setEmails(data.emails || [""]);
+      setPhones(data.phones || [""]);
+      setAddresses(data.addresses || [{ address1: "", address2: "", post: "", isDefault: false }]); // 객체 배열로 초기화
+  
+      console.log("🔄 상태 업데이트 후 userId:", data.userId);
     } catch (error) {
-      console.error('회원 정보 로드 오류:', error);
+      console.error("회원 정보 로드 오류:", error);
     }
   };
+  
+  useEffect(() => {
+    console.log("📌 최신 userId 상태 변경 감지:", userId);
+  }, [userId]);
 
-  // 회원 정보 업데이트
   const handleUpdate = async (e) => {
     e.preventDefault();
     
+    console.log("📢 서버로 보낼 userId:", userId);
+    
+    if (!userId) {
+      alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+      return;
+    }
+
+    const requestData = {
+      userId: Number(userId),
+      email: emails[0],
+      password,
+      phones: phones.filter(Boolean),
+      addresses: addresses.map(addr => ({
+        address1: addr.address1,
+        address2: addr.address2,
+        post: addr.post,
+        isDefault: addr.isDefault
+      }))
+    };
+
+    console.log("📢 서버로 보낼 데이터:", requestData);
+
     try {
-      const response = await fetch('http://localhost:5000/auth/update-user', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ userId, emails, phones, address }),
+      const response = await fetch("http://localhost:5000/auth/update-userinfo", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
-        throw new Error('회원 정보 수정 실패');
+        const errorText = await response.text();
+        throw new Error(`회원 정보 수정 실패: ${errorText}`);
       }
 
-      alert('회원 정보가 수정되었습니다!');
+      alert("회원 정보가 수정되었습니다!");
     } catch (error) {
-      console.error('회원 정보 수정 오류:', error);
+      console.error("❌ 회원 정보 수정 오류:", error);
+      alert(`오류 발생: ${error.message}`);
     }
   };
 
-  const addEmailField = () => setEmails([...emails, '']);
-  const addPhoneField = () => setPhones([...phones, '']);
-
-  const updateEmail = (index, value) => {
-    const newEmails = [...emails];
-    newEmails[index] = value;
-    setEmails(newEmails);
-  };
-
-  const updatePhone = (index, value) => {
-    const newPhones = [...phones];
-    newPhones[index] = value;
-    setPhones(newPhones);
-  };
-
   return (
-    <div className='mypage-container'>
+    <div className="mypage-container">
       <h2>마이페이지</h2>
-      <form onSubmit={handleUpdate} className='mypage-form'>
+      <form onSubmit={handleUpdate} className="mypage-form">
         <label>이름:</label>
+        <br></br>
+        <input type="text" value={userName} disabled />
+        <label>비밀번호:</label>
         <input
-          type='text'
-          value={userName}
-          disabled
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-
+<br></br>
         <label>이메일:</label>
         {emails.map((email, index) => (
           <input
             key={index}
-            type='email'
+            type="email"
             value={email}
-            onChange={(e) => updateEmail(index, e.target.value)}
+            onChange={(e) => {
+              const newEmails = [...emails];
+              newEmails[index] = e.target.value;
+              setEmails(newEmails);
+            }}
             required
           />
         ))}
-        <button type='button' onClick={addEmailField}>이메일 추가</button>
-
+        <button type="button" onClick={() => setEmails([...emails, ""])}>이메일 추가</button>
+        <br></br>
         <label>전화번호:</label>
         {phones.map((phone, index) => (
           <input
             key={index}
-            type='text'
+            type="text"
             value={phone}
-            onChange={(e) => updatePhone(index, e.target.value)}
+            onChange={(e) => {
+              const newPhones = [...phones];
+              newPhones[index] = e.target.value;
+              setPhones(newPhones);
+            }}
           />
         ))}
-        <button type='button' onClick={addPhoneField}>전화번호 추가</button>
+        <button type="button" onClick={() => setPhones([...phones, ""])}>전화번호 추가</button>
 
         <label>주소:</label>
-        <input type='text' value={address} onChange={(e) => setAddress(e.target.value)} />
-
-        <button type='submit' className='update-btn'>
-          정보 수정
-        </button>
+        {addresses.map((address, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              placeholder="주소1"
+              value={address.address1}
+              onChange={(e) => {
+                const newAddresses = [...addresses];
+                newAddresses[index].address1 = e.target.value;
+                setAddresses(newAddresses);
+              }}
+            />
+            <input
+              type="text"
+              placeholder="주소2"
+              value={address.address2}
+              onChange={(e) => {
+                const newAddresses = [...addresses];
+                newAddresses[index].address2 = e.target.value;
+                setAddresses(newAddresses);
+              }}
+            />
+            <input
+              type="text"
+              placeholder="우편번호"
+              value={address.post}
+              onChange={(e) => {
+                const newAddresses = [...addresses];
+                newAddresses[index].post = e.target.value;
+                setAddresses(newAddresses);
+              }}
+            />
+            <label>
+              <input
+                type="checkbox"
+                checked={address.isDefault}
+                onChange={() => {
+                  const newAddresses = [...addresses];
+                  newAddresses[index].isDefault = !newAddresses[index].isDefault;
+                  setAddresses(newAddresses);
+                }}
+              />
+              기본 주소
+            </label>
+          </div>
+        ))}
+        {addresses.length < 3 && (
+          <button type="button" onClick={() => setAddresses([...addresses, { address1: "", address2: "", post: "", isDefault: false }])}>
+            주소 추가
+          </button>
+        )}
+<br></br>
+        <button type="submit" className="update-btn">정보 수정</button>
       </form>
 
-      <button className='back-btn' onClick={() => navigate('/')}>홈으로 돌아가기</button>
+      <button className="back-btn" onClick={() => navigate("/")}>홈으로 돌아가기</button>
     </div>
   );
 }

@@ -115,21 +115,23 @@ function Top() {
         
         
         }
-   
-        {userId ? (
-          <>
-            <button className='TopSigninBt' onClick={handleLogoutClick}>
-              로그아웃
-            </button>
-            <button className='MypageBt' onClick={() => navigate('/mypage')}>
-              마이페이지
-            </button>
-          </>
-        ) : (
-          <button className='TopSigninBt' onClick={handleSignInClick}>
-            로그인
-          </button>
-        )}
+   <div className="button-container">
+  {userId ? (
+    <>
+      <button className='TopSigninBt' onClick={handleLogoutClick}>
+        로그아웃
+      </button>
+      <button className='MypageBt' onClick={() => navigate('/mypage')}>
+        마이페이지
+      </button>
+    </>
+  ) : (
+    <button className='TopSigninBt' onClick={handleSignInClick}>
+      로그인
+    </button>
+  )}
+</div>
+
       </div>
 
       {/* 사용자 얼굴 인식 테스트 버튼 추가 */}
