@@ -122,8 +122,12 @@ button {
 }
 
 .button-container {
-  margin: 20px; /* button-container에 20px의 여백 추가 */
+  display: flex; /* Flexbox를 사용하여 가로 정렬 */
+  gap: 10px; /* 버튼 간의 간격 설정 */
+  align-items: center; /* 수직 정렬을 중앙으로 설정 (선택 사항) */
+  margin: 10px; /* button-container에 20px의 여백 추가 */
 }
+
 
 button:active {
   transform: scale(0.98);
