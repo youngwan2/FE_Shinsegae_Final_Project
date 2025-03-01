@@ -1,25 +1,53 @@
-import Form from 'react-bootstrap/Form';
-import { CiHeart } from 'react-icons/ci';
+import { useState, useEffect } from 'react';
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+
+import Top from './components/layout/Top';
+import MenuBar from './MenuBar';
+import SignIn from './pages/SignIn.jsx';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import CameraCapturePage from './pages/CameraCapturePage';
+import ContactPage from './pages/ContactPage';
+import MyPage from './pages/MyPage';
+import EventPage from './pages/EventPage';
+import SignUp from './pages/SignUp.jsx';
 
 function App() {
+  // localStorage에서 초기 데이터 불러오기
+  const [memberData, setMemberData] = useState(() => {
+    return JSON.parse(localStorage.getItem('memberData')) || [];
+  });
+
+  // memberData 변경될 때 localStorage 업데이트
+  useEffect(() => {
+    if (memberData.length > 0) {
+      localStorage.setItem('memberData', JSON.stringify(memberData));
+    }
+  }, [memberData]);
+
+  // 새로운 멤버 추가 함수
+  function handleAdd(newMember) {
+    setMemberData((prev) => [...prev, newMember]);
+  }
+
   return (
-    <>
-      <CiHeart />
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData(e.target);
-          console.log(formData.get('name'));
-        }}
-      >
-        <Form.Label htmlFor='inputPassword5'>Password</Form.Label>
-        <Form.Control type='password' id='inputPassword5' aria-describedby='passwordHelpBlock' />
-        <Form.Text id='passwordHelpBlock' muted>
-          Your password must be 8-20 characters long, contain letters and numbers, and must not
-          contain spaces, special characters, or emoji.
-        </Form.Text>
-      </Form>
-    </>
+    <div className='App'>
+      <Top />
+      <MenuBar />
+
+      <Routes>
+        <Route path='/' element={<HomePage memberData={memberData} onAdd={handleAdd} />} />
+        <Route path='/about' element={<AboutPage />} />
+        <Route path='/contact' element={<ContactPage />} />
+        <Route path='/event' element={<EventPage />} />
+        <Route path='/camera' element={<CameraCapturePage onAdd={handleAdd} />} />
+        <Route path='/signin' element={<SignIn />} />
+        <Route path='/mypage' element={<MyPage />} />
+        <Route path='/signup' element={<SignUp />} /> {/* ✅ 회원가입 경로 추가 */}
+      </Routes>
+    </div>
   );
 }
 
