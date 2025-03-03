@@ -32,6 +32,43 @@ function SignIn() {
         }
     };
 
+
+    const checkLoginStatus = async () => {
+        try {
+            console.log('로그인 상태 확인 중...'); // ✅ 확인용 로그 추가
+            const response = await fetch('http://localhost:5000/auth/user-info', {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('로그인된 사용자 정보:', data); // ✅ 확인용 로그 추가
+                setUserName(data.userName);
+
+                // 로그인된 상태이면 홈으로 이동
+                navigate('/');
+            }
+        } catch (error) {
+            console.error('로그인 상태 확인 실패:', error);
+        }
+    };
+
+    useEffect(() => {
+        console.log('SignIn useEffect 실행됨'); // ✅ 확인용 로그 추가
+        checkLoginStatus(); // 로그인 확인 후 홈 리디렉션 처리
+
+        const params = new URLSearchParams(location.search);
+        const userId = params.get('userId');
+        const userName = params.get('userName');
+
+        console.log('URL Params:', { userId, userName }); // ✅ 확인용 로그 추가
+
+        if (userId && userName) {
+            setUserName(userName);
+        }
+    }, [location.search]);
+
     // 로컬 로그인 요청
     const handleLogin = async () => { 
         try {
@@ -95,18 +132,7 @@ function SignIn() {
 
     return (
         <div className="signin-container">
-            <h1>소셜 로그인</h1>
-            <button onClick={handleKakaoLogin} className="login-btn">
-                카카오 로그인
-            </button>
-            <button onClick={handleNaverLogin} className="login-btn">
-                네이버 로그인
-            </button>
-            {/* 
-<button onClick={handleGoogleLogin} className="login-btn">
-    구글 로그인
-</button>
-*/}
+            
             {/* ✅ 로컬 로그인 폼 추가 */}
             <h2>로컬 로그인</h2>
             <input
@@ -125,6 +151,21 @@ function SignIn() {
                 로그인
             </button>
             <button onClick={handleSignUpRedirect} className="signup-redirect-btn">회원가입</button>
+            
+            <h1>또는<br></br>소셜 로그인</h1>
+            <button onClick={handleKakaoLogin} className="login-btn">
+                카카오 로그인
+            </button>
+            <button onClick={handleNaverLogin} className="login-btn">
+                네이버 로그인
+            </button>
+            {/* 
+<button onClick={handleGoogleLogin} className="login-btn">
+    구글 로그인
+</button>
+*/}
+            
+            
             {userName && <div className="topbar">환영합니다, {userName}님!</div>}
         </div>
     );
