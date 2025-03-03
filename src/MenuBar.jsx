@@ -18,10 +18,21 @@ function MenuBar() {
     setOpenSubMenu(menu);
   };
 
-  const handleMouseLeave = () => {
-    setOpenSubMenu(null);
-  };
+  const handleMouseLeave = (e) => {
+    // mouseenter가 menuItem이나 subMenu에서 발생했는지 확인
+    const menuElement = menuRef.current;
+    const subMenuElement = subMenuRef.current;
 
+    // 마우스가 menuElement 또는 subMenuElement에 있지 않으면 서브메뉴를 닫음
+    if (
+      menuElement &&
+      subMenuElement &&
+      !menuElement.contains(e.relatedTarget) &&
+      !subMenuElement.contains(e.relatedTarget)
+    ) {
+      setOpenSubMenu(null);
+    }
+  };
   useEffect(() => {
     setIsMenuOpen(false); // 라우트 변경 감지 시 메뉴 닫기
     setIsIconClicked(false);
@@ -41,7 +52,7 @@ function MenuBar() {
           소개
         </Link>
         <Link to='/contact' className='menu-link'>
-          연락처
+          FAQ페이지
         </Link>
         <Link to='/event' className='menu-link'>
           이벤트상품

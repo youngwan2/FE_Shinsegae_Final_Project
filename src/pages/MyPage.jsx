@@ -13,7 +13,12 @@ function MyPage() {
 
   useEffect(() => {
     fetchUserInfo();
-  }, []);
+  }, []);useEffect(() => {
+    // ✅ 로그인 상태 확인 후, 로그인 안 되어 있으면 /signin 이동
+    if (userName === null) {
+      navigate("/signin");
+    }
+  }, [userName, navigate]);
 
   const fetchUserInfo = async () => {
     try {
@@ -21,13 +26,13 @@ function MyPage() {
         method: "GET",
         credentials: "include",
       });
-  
+
       if (!response.ok) {
         throw new Error("로그인 정보 조회 실패");
       }
+
       const data = await response.json();
-  
-      console.log("📢 서버에서 받은 데이터:", data); // ✅ 디버깅용
+      console.log("📢 서버에서 받은 데이터:", data);
   
       setUserId(data.userId); 
       setUserName(data.userName);
@@ -95,9 +100,9 @@ function MyPage() {
       <h2>마이페이지</h2>
       <form onSubmit={handleUpdate} className="mypage-form">
         <label>이름:</label>
-        <br></br>
+        
         <input type="text" value={userName} disabled />
-        <label>비밀번호:</label>
+        <br></br><label>비밀번호:</label>
         <input
           type="password"
           value={password}

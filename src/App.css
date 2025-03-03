@@ -10,9 +10,10 @@
   text-align: center;
   @apply p-4 bg-yellow-50;
   min-height: 100vh; /* 화면 전체 크기 */
+  
   display: flex;
   flex-direction: column;
-  padding-top: 160px; /* TopBar의 높이에 맞춰 여백 추가 */
+  padding-top: 100px; /* TopBar의 높이에 맞춰 여백 추가 */
 }
 
 .App-logo {
@@ -44,6 +45,15 @@
 /* ================== */
 /* ✅ 공통 설정 */
 /* ================== */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 가로축 가운데 정렬 */
+  justify-content: center; /* 세로축 가운데 정렬 */
+  min-height: 100vh; /* 전체 화면 높이 맞추기 */
+  margin: 0;
+  text-align: center; /* 텍스트도 가운데 정렬 */
+}
 
 /* about 페이지 */
 .about-page {
@@ -54,7 +64,10 @@
   position: relative;
   padding: 0;
 }
-
+.main {
+  margin-top: 80px; /* TopBar 높이 만큼 마진 추가 */
+  padding: 20px; /* 추가 패딩 */
+}
 /* 첫 번째 섹션 */
 .about-page:nth-child(1) {
   flex-direction: row;
@@ -112,22 +125,29 @@
 /* 기본 버튼 스타일 */
 button {
   display: inline-block;
-  border: 2px solid #ffb400;
-  border-radius: 5px;
-  padding: 10px 20px;
+  border: 2px solid black;
+  border-radius: 2px;
+  padding: 5px 10px;
   background-color: white;
-  color: #ffb400;
+  color: black;
+  width: 80px;
+  font-size: 0.4rem;
+  height: 25px;
+  
   font-weight: bold;
   transition: all 0.3s ease;
 }
 
-.button-container {
-  display: flex; /* Flexbox를 사용하여 가로 정렬 */
-  gap: 10px; /* 버튼 간의 간격 설정 */
-  align-items: center; /* 수직 정렬을 중앙으로 설정 (선택 사항) */
-  margin: 10px; /* button-container에 20px의 여백 추가 */
-}
 
+.button-container {
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px; /* 🔹 버튼 사이 간격 조정 */
+  margin: 0px; /* 🔹 불필요한 여백 제거 */
+  flex-wrap: wrap;
+}
 
 button:active {
   transform: scale(0.98);
@@ -187,7 +207,7 @@ button:active {
   position: fixed;
   top: 0;
   left: 0;
-  height: 160px; /* 원하는 크기로 조정 */
+  height: 100px; /* 원하는 크기로 조정 */
 
   width: 100%;
   z-index: 1000;
@@ -235,13 +255,13 @@ button:active {
 .TopSigninBt {
   position: relative; /* button의 슬라이드 효과를 위한 relative 설정 */
   display: inline-block; /* 버튼 요소 */
-  padding: 10px 20px;
-  font-size: 20px;
+  padding: 3px 8px;
+  font-size: 8px;
   color: black;
   font-family: sans-serif;
   background-color: lightblue;
   border: 0px solid gray;
-  border-radius: 50px;
+  border-radius: 30px;
   cursor: pointer;
   overflow: hidden; /* 슬라이드 효과를 잘 보이게 하기 위한 설정 */
   z-index: 2; /* 버튼 텍스트가 슬라이드 위에 보이도록 설정 */
@@ -266,11 +286,29 @@ button:active {
 .TopSigninBt:hover::before {
   left: 0;
 }
+
+
+
+.cart-popup {
+  position: absolute; /* 상대 위치 설정 */
+  top: 100%; /* 버튼 아래에 위치 */
+  left: 90%; /* 왼쪽 중앙 */
+  transform: translateX(-50%); /* 중앙 정렬 */
+  background-color: white; /* 배경 색상 */
+  border: 1px solid #ddd; /* 테두리 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  padding: 10px; /* 패딩 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+  font-size: 12px; /* 폰트 크기 조정 */
+  font-family: Arial, sans-serif; /* 원하는 폰트로 변경 */
+}
+
+
 .MypageBt {
   position: relative; /* button의 슬라이드 효과를 위한 relative 설정 */
   display: inline-block; /* 버튼 요소 */
-  padding: 10px 20px;
-  font-size: 20px;
+  padding: 5px 10px;
+  font-size: 10px;
   color: black;
   font-family: sans-serif;
   background-color: lightblue;
@@ -309,7 +347,7 @@ button:active {
 }
 
 .search-input {
-  width: 400px;
+  width: 200px;
   padding: 8px;
   border: 2px solid #ccc;
   border-radius: 5px;
@@ -327,6 +365,15 @@ button:active {
   cursor: pointer;
 }
 
+.user-info-container{
+
+  width: 50px;
+  height: 50px;
+  margin-bottom: 0px; /* 🔹 버튼과의 간격 최소화 */
+  text-overflow: ellipsis; /* 텍스트가 넘칠 경우 "..." 표시 */
+
+}
+
 .welcome-message {
   font-size: 12px;
 }
@@ -342,10 +389,10 @@ button:active {
 /* 메뉴바 */ /* ✅ 메뉴 스타일 */
 .menu-bar {
   position: fixed;
-  top: 160px;
+  top: 80px;
   left: -250px;
   height: 100%;
-  width: 240px;
+  width: 200px;
   background-color: #ffb800;
   display: flex;
   flex-direction: column;
@@ -354,6 +401,9 @@ button:active {
   transition: left 0.3s ease-in-out;
   z-index: 800;
   overflow: visible; /* 서브메뉴가 잘리지 않도록 설정 */
+  overflow-y: auto; /* 세로 스크롤 활성화 */
+ /* max-height: calc(100vh - 160px); /* 화면 높이에서 TopBar 크기 제외 */
+  scroll-behavior: smooth; /* 부드러운 스크롤 */
 }
 
 /* 메뉴바 열림 */
@@ -365,19 +415,21 @@ button:active {
 .menu-item {
   position: relative;
   padding: 10px;
-  width: 240px;
+  width: 200px;
   cursor: pointer;
 }
 
 /* ✅ 서브메뉴 스타일 */
 .submenu {
-  position: absolute;
-  top: 0%; /* 부모 요소 기준으로 아래 정렬 */
-  left: 240px; /* 부모 요소의 오른쪽에 위치 */
+  position: fixed;
+  top: 100px; /* 부모 요소 기준으로 아래 정렬 */
+  left: 200px; /* 부모 요소의 오른쪽에 위치 */
   background-color: #ffb800;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
   min-width: 150px;
+  min-height: 70%; /* ✅ 기본 높이 설정 (조절 가능) */
+
   z-index: 810;
   border-radius: 5px;
   padding: 10px;
@@ -390,6 +442,10 @@ button:active {
     opacity 0.3s ease,
     transform 0.3s ease;
   pointer-events: none; /* 마우스 이벤트 방지 */
+}
+
+.menu-bar::-webkit-scrollbar {
+  display: none; /* 스크롤바 숨김 */
 }
 
 /* ✅ 서브메뉴 링크 */
@@ -428,35 +484,19 @@ button:active {
   position: fixed;
   top: 20px;
   left: 20px;
-  background: white;
+  background: transparent; /* 투명 배경으로 변경 */
+
+ 
   padding: 10px;
   border-radius: 50%;
   font-size: 24px;
   cursor: pointer;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1100;
   transition: transform 0.3s ease-in-out; /* 클릭 시 애니메이션 */
 }
 
 .menu-icon:hover {
   transform: scale(1.1); /* hover 시 크기 확대 */
-}
-
-/* 아이콘의 변환 애니메이션 */
-.icon-change {
-  transition:
-    transform 0.3s ease,
-    opacity 0.3s ease; /* 크기와 불투명도 변화 애니메이션 */
-}
-
-/* 클릭 후 아이콘의 회전 효과 */
-.icon-change.fa-times {
-  transform: rotate(180deg); /* X 아이콘이 180도 회전 */
-}
-
-/* 클릭 전 아이콘의 크기 조정 (선택사항) */
-.icon-change.fa-bars {
-  transform: scale(1); /* 기본 크기 */
 }
 
 /* 메뉴 링크 */
