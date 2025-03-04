@@ -13,7 +13,6 @@ import CameraCapturePage from './pages/CameraCapturePage';
 import ContactPage from './pages/ContactPage';
 import MyPage from './pages/MyPage';
 import EventPage from './pages/EventPage';
-import ProductListPage from './pages/ProductListPage';
 import SignUp from './pages/SignUp';
 
 function App() {
@@ -35,28 +34,27 @@ function App() {
   }
 
   return (
-    <div className="flex">
+    <div className='flex'>
       {/* 왼쪽 고정 메뉴바 */}
       <MenuBar />
-  
+
       {/* 메인 컨텐츠 영역 */}
-      <div className="flex-1 ml-60">
+      <div className='flex-1 ml-60'>
         {/* 상단 네비게이션 바 */}
         <Top />
-  
+
         {/* 스크롤 가능한 컨텐츠 영역 */}
-        <main className="main page">
+        <main className='main page'>
           <Routes>
-            <Route path="/" element={<HomePage memberData={memberData} onAdd={handleAdd} />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/event" element={<EventPage />} />
-            <Route path="/camera" element={<CameraCapturePage onAdd={handleAdd} />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/mypage" element={<MyPage />} />
-            <Route path="/signup" element={<SignUp />} /> {/* ✅ 회원가입 경로 추가 */}
-            <Route path="/cart" element={<CartPage />} /> 
-            <Route path="/productlist" element={<ProductListPage />} /> 
+            <Route path='/' element={<HomePage memberData={memberData} onAdd={handleAdd} />} />
+            <Route path='/about' element={<AboutPage />} />
+            <Route path='/contact' element={<ContactPage />} />
+            <Route path='/event' element={<EventPage />} />
+            <Route path='/camera' element={<CameraCapturePage onAdd={handleAdd} />} />
+            <Route path='/signin' element={<SignIn />} />
+            <Route path='/mypage' element={<MyPage />} />
+            <Route path='/signup' element={<SignUp />} /> {/* ✅ 회원가입 경로 추가 */}
+            <Route path='/cart' element={<CartPage />} />
           </Routes>
         </main>
       </div>
