@@ -1,0 +1,77 @@
+.layout {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+
+/* 사이드바 */
+.sidebar {
+  max-width: 200px;
+  width: 100%;
+  background: #1f2937;
+  color: white;
+  padding: 20px 20px;
+
+  .sidebar-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+
+  .sidebar-navigation {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    a {
+      text-decoration: none;
+      color: white;
+      margin: 3px;
+      padding: 8px 5px;
+    }
+
+    .active {
+      border-radius: 5px;
+      background: #374151;
+      /* 링크 활성화 시  */
+    }
+  }
+
+  /* 판매자 프로필 */
+  .sidebar-profile {
+    display: flex;
+    align-items: center;
+    padding: 20px 0px;
+
+    .seller-icon {
+      width: 30px;
+    }
+
+    .profile-contents {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .seller-name {
+        font-size: 0.85rem;
+        margin: 0;
+      }
+
+      .placename {
+        font-size: 10px;
+        letter-spacing: 1px;
+        color: gray;
+      }
+    }
+
+    /* 로그아웃 버튼 */
+    .logout-button {
+      background: none;
+      border: none;
+      color: white;
+      margin: 0 0 0 0.5rem;
+    }
+    .logout-button:hover {
+      color: gray;
+    }
+  }
+}

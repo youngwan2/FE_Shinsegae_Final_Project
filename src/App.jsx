@@ -15,6 +15,10 @@ import EventPage from './pages/EventPage';
 import SignUp from './pages/SignUp';
 import SellerPage from './pages/saller-dashboard/SellerPage.jsx';
 import ProductListPage from './pages/ProductListPage.jsx';
+import DashboardPage from './pages/saller-dashboard/components/DashboardPage.jsx';
+import ProductPage from './pages/saller-dashboard/ProductPage.jsx';
+import OrderPage from './pages/saller-dashboard/OrderPage.jsx';
+import InventoryPage from './pages/saller-dashboard/InventoryPage.jsx';
 
 function App() {
   const [memberData, setMemberData] = useState(() => {
@@ -33,7 +37,8 @@ function App() {
 
   // 현재 경로 가져오기
   const location = useLocation();
-  const isAdminPage = location.pathname.startsWith('/admin', '/seller'); // `/admin`으로 시작하면 true
+  const isAdminPage =
+    location.pathname.startsWith('/seller') || location.pathname.startsWith('/admin'); // `/admin`으로 시작하면 true
 
   return (
     <div className='flex'>
@@ -54,7 +59,12 @@ function App() {
             <Route path='/signup' element={<SignUp />} />
             <Route path='/cart' element={<CartPage />} />
             <Route path='/productlist' element={<ProductListPage />} />
-            <Route path='/seller' element={<SellerPage />} />
+            <Route path='/seller' element={<SellerPage />}>
+              <Route path='dashboard' element={<DashboardPage />} />
+              <Route path='product' element={<ProductPage />} />
+              <Route path='order' element={<OrderPage />} />
+              <Route path='inventory' element={<InventoryPage />} />
+            </Route>
           </Routes>
         </main>
       </div>

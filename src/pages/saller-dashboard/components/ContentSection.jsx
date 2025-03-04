@@ -1,5 +1,7 @@
+import { Outlet } from 'react-router';
+
 function ContentSection() {
-  return <div></div>;
+  return <Outlet />;
 }
 
 export default ContentSection;

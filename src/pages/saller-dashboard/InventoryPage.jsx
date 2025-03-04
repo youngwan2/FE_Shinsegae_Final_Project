@@ -1,4 +1,4 @@
-function InventoryManagement() {
+function InventoryPage() {
   return (
     <div>
       <h2>재고관리</h2>
@@ -6,4 +6,4 @@ function InventoryManagement() {
   );
 }
 
-export default InventoryManagement;
+export default InventoryPage;
