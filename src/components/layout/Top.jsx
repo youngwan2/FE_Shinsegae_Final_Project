@@ -109,7 +109,7 @@ function Top() {
         <input
           type='text'
           className='search-input'
-          placeholder=''
+          placeholder='검색어 입력'
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
