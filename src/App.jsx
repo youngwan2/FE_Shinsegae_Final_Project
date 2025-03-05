@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
-
+import './index.css'; // CSS 브라우저 기본 설정 리셋
 import Top from './components/layout/Top';
 import MenuBar from './MenuBar';
 import SignIn from './pages/SignIn.jsx';
@@ -13,12 +13,14 @@ import ContactPage from './pages/ContactPage';
 import MyPage from './pages/MyPage';
 import EventPage from './pages/EventPage';
 import SignUp from './pages/SignUp';
-import SellerPage from './pages/saller-dashboard/SellerPage.jsx';
 import ProductListPage from './pages/ProductListPage.jsx';
-import DashboardPage from './pages/saller-dashboard/components/DashboardPage.jsx';
-import ProductPage from './pages/saller-dashboard/ProductPage.jsx';
-import OrderPage from './pages/saller-dashboard/OrderPage.jsx';
-import InventoryPage from './pages/saller-dashboard/InventoryPage.jsx';
+import SellerPage from './pages/sellerDashboard/SellerPage.jsx';
+import SellerDashboardPage from './pages/sellerDashboard/SellerDashboardPage.jsx';
+import SellerProductPage from './pages/sellerDashboard/SellerProductPage.jsx';
+import SellerOrderPage from './pages/sellerDashboard/SellerOrderPage.jsx';
+import SellerInventoryPage from './pages/sellerDashboard/SellerInventoryPage.jsx';
+import SellerSalesPage from './pages/sellerDashboard/SellerSalesPage.jsx';
+import SellerPaymentPage from './pages/sellerDashboard/SellerPaymentPage.jsx';
 
 function App() {
   const [memberData, setMemberData] = useState(() => {
@@ -60,10 +62,12 @@ function App() {
             <Route path='/cart' element={<CartPage />} />
             <Route path='/productlist' element={<ProductListPage />} />
             <Route path='/seller' element={<SellerPage />}>
-              <Route path='dashboard' element={<DashboardPage />} />
-              <Route path='product' element={<ProductPage />} />
-              <Route path='order' element={<OrderPage />} />
-              <Route path='inventory' element={<InventoryPage />} />
+              <Route index path='dashboard' element={<SellerDashboardPage />} />
+              <Route path='product' element={<SellerProductPage />} />
+              <Route path='order' element={<SellerOrderPage />} />
+              <Route path='inventory' element={<SellerInventoryPage />} />
+              <Route path='sales' element={<SellerSalesPage />} />
+              <Route path='payment' element={<SellerPaymentPage />} />
             </Route>
           </Routes>
         </main>

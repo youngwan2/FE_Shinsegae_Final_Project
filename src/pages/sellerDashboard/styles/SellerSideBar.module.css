@@ -12,12 +12,18 @@
   color: white;
   padding: 20px 20px;
 
-  .sidebar-title {
+  .sidebarTitle {
     font-size: 1.1rem;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+
+    span {
+      padding-left: 5px;
+    }
   }
 
-  .sidebar-navigation {
+  .sidebarNavigation {
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
@@ -37,7 +43,7 @@
   }
 
   /* 판매자 프로필 */
-  .sidebar-profile {
+  .sidebarProfile {
     display: flex;
     align-items: center;
     padding: 20px 0px;
@@ -46,17 +52,17 @@
       width: 30px;
     }
 
-    .profile-contents {
+    .profileContents {
       display: flex;
       flex-direction: column;
       justify-content: center;
 
-      .seller-name {
+      .sellerName {
         font-size: 0.85rem;
         margin: 0;
       }
 
-      .placename {
+      .placeName {
         font-size: 10px;
         letter-spacing: 1px;
         color: gray;
@@ -64,13 +70,13 @@
     }
 
     /* 로그아웃 버튼 */
-    .logout-button {
+    .logoutButton {
       background: none;
       border: none;
       color: white;
       margin: 0 0 0 0.5rem;
     }
-    .logout-button:hover {
+    .logoutButton:hover {
       color: gray;
     }
   }

@@ -8,25 +8,26 @@ import {
   IoStorefrontOutline,
   IoPersonOutline,
   IoCardOutline,
+  IoGridOutline,
 } from 'react-icons/io5';
-import styles from '../styles/page.module.css';
+import styles from '../styles/SellerSideBar.module.css';
 
-function SideBar() {
+function SellerSideBar() {
   return (
     <div className={styles.sidebar}>
       <div>
-        <h2 className={styles['sidebar-title']}>
-          <IoStorefrontOutline /> 판매자 대시보드
+        <h2 className={styles.sidebarTitle}>
+          <IoStorefrontOutline /> <span>판매자 대시보드</span>
         </h2>
         <hr />
 
         {/* 네비게이션 */}
-        <div className={styles['sidebar-navigation']}>
+        <div className={styles.sidebarNavigation}>
           <NavLink
             className={({ isActive }) => (isActive ? styles.active : undefined)}
             to={'/seller/dashboard'}
           >
-            <IoBarChartOutline /> 대시보드
+            <IoGridOutline /> 대시보드
           </NavLink>
           <NavLink
             className={({ isActive }) => (isActive ? styles.active : undefined)}
@@ -48,21 +49,27 @@ function SideBar() {
           </NavLink>
           <NavLink
             className={({ isActive }) => (isActive ? styles.active : undefined)}
-            to={'/seller/income'}
+            to={'/seller/sales'}
           >
-            <IoCardOutline /> 매출 및 정산
+            <IoBarChartOutline /> 매출 관리
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => (isActive ? styles.active : undefined)}
+            to={'/seller/payment'}
+          >
+            <IoCardOutline /> 정산 관리
           </NavLink>
           <hr />
         </div>
       </div>
       {/* 판매자 프로필 */}
-      <div className={styles['sidebar-profile']}>
-        <IoPersonOutline className={styles['seller-icon']} />
-        <div className={styles['profile-contents']}>
-          <p className={styles['seller-name']}>홍길동 점주님</p>
-          <span className={styles['placename']}>부산점</span>
+      <div className={styles.sidebarProfile}>
+        <IoPersonOutline className={styles.sellerIcon} />
+        <div className={styles.profileContents}>
+          <p className={styles.sellerName}>홍길동 점주님</p>
+          <span className={styles.placeName}>부산점</span>
         </div>
-        <button className={styles['logout-button']} title='로그아웃'>
+        <button className={styles.logoutButton} title='로그아웃'>
           <IoLogOutOutline />
         </button>
       </div>
@@ -70,4 +77,4 @@ function SideBar() {
   );
 }
 
-export default SideBar;
+export default SellerSideBar;
