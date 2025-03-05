@@ -12,8 +12,9 @@ import CameraCapturePage from './pages/CameraCapturePage';
 import ContactPage from './pages/ContactPage';
 import MyPage from './pages/MyPage';
 import EventPage from './pages/EventPage';
-import ProductListPage from './pages/ProductListPage';
 import SignUp from './pages/SignUp';
+import CategoryPage from './pages/CategoryPage';
+import SearchPage from './pages/SearchPage'; 
 
 function App() {
   const [memberData, setMemberData] = useState(() => {
@@ -52,7 +53,8 @@ function App() {
             <Route path='/mypage' element={<MyPage />} />
             <Route path='/signup' element={<SignUp />} />
             <Route path='/cart' element={<CartPage />} />
-            <Route path='/productlist' element={<ProductListPage />} />
+            <Route path="/category/:categoryId" element={<CategoryPage />} />
+            <Route path="/search" element={<SearchPage />} />
           </Routes>
         </main>
       </div>
