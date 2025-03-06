@@ -4,15 +4,34 @@ import '../App.css'; // 스타일 적용
 
 function ProductListPage() {
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
+  const [userId, setUserId] = useState(null); // 사용자 ID 상태
   const navigate = useNavigate();
 
   useEffect(() => {
-    loadCart(); // 로컬 스토리지에서 장바구니 불러오기
+    fetchUserInfo(); // 사용자 정보 가져오기
     fetchProducts(); // 하드코딩된 상품 목록 불러오기
   }, []);
 
-  // 🔹 하드코딩된 상품 목록 불러오기
+  // 사용자 정보 요청
+  const fetchUserInfo = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/auth/user-info', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('로그인 정보 조회 실패');
+      }
+
+      const data = await response.json();
+      setUserId(data.userId); // 사용자 ID 설정
+    } catch (error) {
+      console.error('사용자 정보 조회 오류:', error.message);
+    }
+  };
+
+  // 하드코딩된 상품 목록 불러오기
   const fetchProducts = () => {
     const hardcodedProducts = [
       { productId: 1, name: '상품 A', price: 10000 },
@@ -22,31 +41,35 @@ function ProductListPage() {
     setProducts(hardcodedProducts);
   };
 
-  // 🛒 로컬 스토리지에서 장바구니 불러오기
-  const loadCart = () => {
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
+  // 장바구니에 상품 추가
+  const addToCart = async (product) => {
+    try {
+      const response = await fetch(`http://localhost:5000/cart/add?userId=${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId: product.productId,
+          quantity: 1, // 기본 수량 1로 설정
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text(); // 서버의 에러 메시지 확인
+        throw new Error(`장바구니 추가 실패: ${errorText}`);
+      }
+
+      // 응답을 JSON으로 파싱
+      const responseData = await response.json();
+      console.log('장바구니에 추가됨:', responseData);
+
+      // 성공적으로 추가된 경우 사용자에게 알림
+      alert(responseData.message); // 서버에서 받은 메시지 출력
+    } catch (error) {
+      console.error('장바구니 추가 오류:', error.message);
+      alert('장바구니 추가에 실패했습니다. 다시 시도해 주세요.');
     }
-  };
-
-  // 🛒 장바구니에 상품 추가
-  const addToCart = (product) => {
-    const existingItem = cart.find((item) => item.productId === product.productId);
-    let updatedCart;
-
-    if (existingItem) {
-      // 기존 상품의 수량을 증가시킴
-      updatedCart = cart.map((item) =>
-        item.productId === product.productId ? { ...item, quantity: item.quantity + 1 } : item,
-      );
-    } else {
-      // 새로운 상품을 추가
-      updatedCart = [...cart, { ...product, quantity: 1 }];
-    }
-
-    setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart)); // 로컬 스토리지에 저장
   };
 
   return (

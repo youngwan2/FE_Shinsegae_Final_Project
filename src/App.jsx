@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
-
+import './index.css'; // CSS 브라우저 기본 설정 리셋
 import Top from './components/layout/Top';
 import MenuBar from './MenuBar';
 import SignIn from './pages/SignIn.jsx';
@@ -14,38 +13,44 @@ import ContactPage from './pages/ContactPage';
 import MyPage from './pages/MyPage';
 import EventPage from './pages/EventPage';
 import SignUp from './pages/SignUp';
+import ProductListPage from './pages/ProductListPage.jsx';
+import SellerPage from './pages/sellerDashboard/SellerPage.jsx';
+import SellerDashboardPage from './pages/sellerDashboard/SellerDashboardPage.jsx';
+import SellerProductPage from './pages/sellerDashboard/SellerProductPage.jsx';
+import SellerOrderPage from './pages/sellerDashboard/SellerOrderPage.jsx';
+import SellerInventoryPage from './pages/sellerDashboard/SellerInventoryPage.jsx';
+import SellerSalesPage from './pages/sellerDashboard/SellerSalesPage.jsx';
+import SellerPaymentPage from './pages/sellerDashboard/SellerPaymentPage.jsx';
 
 function App() {
-  // localStorage에서 초기 데이터 불러오기
   const [memberData, setMemberData] = useState(() => {
     return JSON.parse(localStorage.getItem('memberData')) || [];
   });
 
-  // memberData 변경될 때 localStorage 업데이트
   useEffect(() => {
     if (memberData.length > 0) {
       localStorage.setItem('memberData', JSON.stringify(memberData));
     }
   }, [memberData]);
 
-  // 새로운 멤버 추가 함수
   function handleAdd(newMember) {
     setMemberData((prev) => [...prev, newMember]);
   }
 
+  // 현재 경로 가져오기
+  const location = useLocation();
+  const isAdminPage =
+    location.pathname.startsWith('/seller') || location.pathname.startsWith('/admin'); // `/admin`으로 시작하면 true
+
   return (
     <div className='flex'>
-      {/* 왼쪽 고정 메뉴바 */}
-      <MenuBar />
-
-      {/* 메인 컨텐츠 영역 */}
-      <div className='flex-1 ml-60'>
-        {/* 상단 네비게이션 바 */}
-        <Top />
-
-        {/* 스크롤 가능한 컨텐츠 영역 */}
+      {/* 관리자 페이지가 아닐 때만 MenuBar와 Top을 렌더링 */}
+      {!isAdminPage && <MenuBar />}
+      <div className={`flex-1 ${!isAdminPage ? 'ml-60' : ''}`}>
+        {!isAdminPage && <Top />}
         <main className='main page'>
           <Routes>
+            {/* 일반 페이지 */}
             <Route path='/' element={<HomePage memberData={memberData} onAdd={handleAdd} />} />
             <Route path='/about' element={<AboutPage />} />
             <Route path='/contact' element={<ContactPage />} />
@@ -53,8 +58,17 @@ function App() {
             <Route path='/camera' element={<CameraCapturePage onAdd={handleAdd} />} />
             <Route path='/signin' element={<SignIn />} />
             <Route path='/mypage' element={<MyPage />} />
-            <Route path='/signup' element={<SignUp />} /> {/* ✅ 회원가입 경로 추가 */}
+            <Route path='/signup' element={<SignUp />} />
             <Route path='/cart' element={<CartPage />} />
+            <Route path='/productlist' element={<ProductListPage />} />
+            <Route path='/seller' element={<SellerPage />}>
+              <Route index path='dashboard' element={<SellerDashboardPage />} />
+              <Route path='product' element={<SellerProductPage />} />
+              <Route path='order' element={<SellerOrderPage />} />
+              <Route path='inventory' element={<SellerInventoryPage />} />
+              <Route path='sales' element={<SellerSalesPage />} />
+              <Route path='payment' element={<SellerPaymentPage />} />
+            </Route>
           </Routes>
         </main>
       </div>
