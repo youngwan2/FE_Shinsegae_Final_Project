@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import "../../App.css"; // 경로 확인 필수!
+import { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import '../../App.css'; // 경로 확인 필수!
 
 function Top() {
   const [userId, setUserId] = useState(null);
@@ -18,28 +18,28 @@ function Top() {
 
   const fetchUserInfo = async () => {
     try {
-      const response = await fetch("http://localhost:5000/auth/user-info", {
-        method: "GET",
-        credentials: "include",
+      const response = await fetch('http://localhost:5000/auth/user-info', {
+        method: 'GET',
+        credentials: 'include',
       });
 
       if (!response.ok) {
-        throw new Error("로그인 정보 조회 실패");
+        throw new Error('로그인 정보 조회 실패');
       }
 
       const data = await response.json();
-      console.log("응답 상태:", response.status);
-      console.log("사용자 정보:", data);
+      console.log('응답 상태:', response.status);
+      console.log('사용자 정보:', data);
 
       setUserId(data.userId);
       setUserName(data.userName);
     } catch (error) {
-      console.error("사용자 정보 조회 오류:", error.message);
+      console.error('사용자 정보 조회 오류:', error.message);
     }
   };
 
   const loadCart = () => {
-    const storedCart = localStorage.getItem("cart");
+    const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       setCartItems(JSON.parse(storedCart));
     }
@@ -113,18 +113,19 @@ function Top() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <button type='submit' className='search-button'>🔍</button>
+        <button type='submit' className='search-button'>
+          🔍
+        </button>
       </form>
-
       {/* 유저 정보 및 버튼 그룹 */}
-      <div className="user-info-container">
+      <div className='user-info-container'>
         {userId && userName && (
-          <p className="welcome-message">
-            {userName}님,  <span>유저 ID: {userId}</span>
+          <p className='welcome-message'>
+            {userName}님, <span>유저 ID: {userId}</span>
           </p>
         )}
       </div>
-      <div className="button-container">
+      <div className='button-container'>
         {userId ? (
           <>
             <button className='TopSigninBt' onClick={handleLogoutClick}>
@@ -142,11 +143,7 @@ function Top() {
               장바구니
             </button>
             {/* 장바구니 팝업 */}
-            {showCartPopup && (
-              <div className="cart-popup">
-                {getCartItemList()}
-              </div>
-            )}
+            {showCartPopup && <div className='cart-popup'>{getCartItemList()}</div>}
           </>
         ) : (
           <button className='TopSigninBt' onClick={handleSignInClick}>
